@@ -7,23 +7,59 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+class Usuario (Base):
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+    __tablename__ = 'usuario'    
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    firstname = Column(String(250), nullable= True)
+    lastname = Column(String(250), nullable= True)
+    user = Column(String(250), nullable= True)
+    email = Column(String(250), nullable= True)
+
+class Likes (Base):
+
+    __tablename__ = 'likes'    
+    id = Column(Integer, primary_key=True)
+    reaccion = Column(String(250), nullable= True)
+    usuario_id = Column(Integer, ForeignKey('usuario.id'))
+    usuario = relationship(Usuario)
+
+class Medias (Base):
+
+    __tablename__ = 'medias'    
+    id = Column(Integer, primary_key=True)
+    photo_familia = Column(String(250), nullable= True)
+    video_party = Column(String(250), nullable= True)
+    usuario_id = Column(Integer, ForeignKey('usuario.id'))
+    usuario = relationship(Usuario)        
+
+class Comentarios (Base):
+
+    __tablename__ = 'comentarios'    
+    id = Column(Integer, primary_key=True)
+    parrafo = Column(String(250), nullable= True)
+    usuario_id = Column(Integer, ForeignKey('usuario.id'))
+    usuario = relationship(Usuario)    
+    # post_id = Column(Integer, ForeignKey('post.id'))
+    # post = relationship()
+
+
+class Post (Base):
+    __tablename__ = 'post' 
+    id = Column(Integer, primary_key=True)      
+    usuario_id = Column(Integer, ForeignKey('usuario.id'))    
+    usuario = relationship(Usuario)
+    comentarios_id = Column(Integer, ForeignKey('comentario.id'))
+    parrafo = Column(String(250), nullable= True)
+    comentarios = relationship(Comentarios)
+    medias_id = Column(Integer, ForeignKey('medias.id'))
+    photo_familia = Column(String(250), nullable= True)
+    video_party = Column(String(250), nullable= True)
+    medias = relationship(Medias)
+    likes_id = Column('Integer, ForeignKey(likes.id')
+    reaccion = Column(String(250), nullable= True)
+    likes = relationship(Likes)
+
 
     def to_dict(self):
         return {}
